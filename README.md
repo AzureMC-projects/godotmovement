@@ -1,6 +1,6 @@
 # Godot Movement System
 
-A small Godot 4 first-person movement starter with:
+A small Godot 4 first-person movement system with:
 
 - WASD movement
 - Mouse-look camera
@@ -14,37 +14,71 @@ A small Godot 4 first-person movement starter with:
 
 - Godot 4.x
 
-## How to use
+## Import into an existing Godot game
+
+You can use this system in an existing Godot 4 project without replacing your current main scene.
+
+### 1. Copy the player files
+
+Copy `player.gd` and `player.tscn` into your existing project, for example in `res://player/`.
+
+### 2. Add the Input Map actions
+
+Open **Project > Project Settings > Input Map** and create these actions:
+
+| Action | Key |
+|---|---|
+| `move_forward` | W |
+| `move_backward` | S |
+| `move_left` | A |
+| `move_right` | D |
+
+Keep the action names exactly as shown unless you also change them in `player.gd`.
+
+### 3. Add the player to your existing scene
+
+Open the 3D scene where you want the player to spawn and drag `player.tscn` into the scene tree, or use **Scene > Instantiate Child Scene**.
+
+Place the player above your floor or other collision geometry.
+
+### 4. Make sure your level has collision
+
+The controller uses `CharacterBody3D` collision. Your floor, walls, and other objects the player should interact with need appropriate collision shapes/physics bodies.
+
+### 5. Set the camera
+
+The included player contains:
+
+    Player (CharacterBody3D)
+    ├── CollisionShape3D
+    ├── Body
+    └── Neck (Node3D)
+        └── Camera3D
+
+The included `Camera3D` is already set as the current camera. If your game already has a gameplay camera, remove/disable the old one or make the player's camera current.
+
+### 6. Run your existing game
+
+Your existing main scene does not need to be replaced. The player is simply instantiated into it.
+
+Use **WASD** to move and the **mouse** to look. **Esc** releases the mouse and **left click** captures it again.
+
+## How to use this repository by itself
 
 1. Clone or download this repository.
 2. Open the project folder in Godot 4.
-3. Run the project. The included `main.tscn` is already configured as the main scene.
-4. Move with **WASD**.
-5. Move the mouse to look around.
-6. Press **Esc** to release the mouse cursor.
-7. Left-click the game window to capture the cursor again.
-
-## Using the player in another project
-
-1. Copy `player.gd` and `player.tscn` into your project.
-2. Add these Input Map actions in **Project > Project Settings > Input Map**:
-   - `move_forward` = W
-   - `move_backward` = S
-   - `move_left` = A
-   - `move_right` = D
-3. Instantiate `player.tscn` into a 3D scene with collision geometry.
-4. Make sure the player starts above a walkable surface.
-5. Run the scene.
+3. Add the player scene to your own 3D level.
+4. Configure the four Input Map actions above.
+5. Set your level as the main scene.
+6. Run the game.
 
 ## Player hierarchy
 
-```
-Player (CharacterBody3D)
-├── CollisionShape3D
-├── Body
-└── Neck (Node3D)
-    └── Camera3D
-```
+    Player (CharacterBody3D)
+    ├── CollisionShape3D
+    ├── Body
+    └── Neck (Node3D)
+        └── Camera3D
 
 The player rotates left/right, while `Neck` rotates up/down. This makes the setup easy to extend with head bobbing, crouching, weapon sway, or other camera effects.
 
